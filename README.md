@@ -45,6 +45,7 @@ La semilla va a cargar los datos de los piratas y borrar las colecciones que hub
     "material": "Adam Wood",
     "velas": 2,
   }(en el Schema de barcos estan los que utilizo para subir comentados)
+
 ###Barcos
 
 **POST** http://localhost:3000/api/v1/barcos
