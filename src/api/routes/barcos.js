@@ -6,7 +6,7 @@ const barcosRoutes= require("express").Router();
 
 barcosRoutes.post("/", postBarcos);
 barcosRoutes.get("/", getBarcos);
-barcosRoutes.delete("/:id/piratas", deletePirataBarco);
+barcosRoutes.patch("/:id/piratas", deletePirataBarco);
 barcosRoutes.delete("/:id",deleteBarcos);
 barcosRoutes.put("/:id",updateBarcos);
 

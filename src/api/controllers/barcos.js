@@ -65,7 +65,7 @@ const updateBarcos = async (req, res, next) => {
   }
 };
 
-//? DELETE PIRATA
+//? PATCH, eliminar pirata dentro de un barco
 
 const deletePirataBarco = async(req,res,next)=>{
   try {
@@ -73,7 +73,7 @@ const deletePirataBarco = async(req,res,next)=>{
     const oldBarco = await Barcos.findById(id);
 
     if (!oldBarco) {
-      return res.status(404).json(`Barco no encontrado:${error.message}`);
+      return res.status(404).json('Barco no encontrado');
     }
 
     let piratasAEliminar = [];
