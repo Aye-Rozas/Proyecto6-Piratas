@@ -75,10 +75,7 @@ Necesitamos para la ruta el id del pirata que vamos a modificar o actualizar.
 |PUT	|/barcos/:id |	Actualizar datos del barco y agregar piratas sin duplicar|
 |PUT	|/barcos/:id/piratas |Eliminar uno o varios piratas del barco|
 |DELETE	|/barcos/:id |	Eliminar un barco por ID|
-=======
 
-###Barcos
->>>>>>> 818fc45884058a8bc263bcf00f83a8d91d0b8a23
 
 **POST** http://localhost:3000/api/v1/barcos
 Crear un nuevo barco
