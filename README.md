@@ -32,7 +32,6 @@ La semilla va a cargar los datos de los piratas y borrar las colecciones que hub
     "material": "Adam Wood",
     "velas": 2,
   }(en el Schema de barcos estan los que utilizo para subir comentados)
-<<<<<<< HEAD
   ```
   
   **ENDPOINTS - PIRATAS** 
@@ -73,12 +72,12 @@ Necesitamos para la ruta el id del pirata que vamos a modificar o actualizar.
 |GET	|/barcos  |	Obtener todos los barcos (con piratas populados)|
 |POST	|/barcos |	Crear un nuevo barco|
 |PUT	|/barcos/:id |	Actualizar datos del barco y agregar piratas sin duplicar|
-|PATCH	|/barcos/:id/piratas |Eliminar uno o varios piratas del barco|
 |DELETE	|/barcos/:id |	Eliminar un barco por ID|
 
 
 **POST** http://localhost:3000/api/v1/barcos
 Crear un nuevo barco
+
 ```sh
 {"name": "Big Top",
     "imgUrl": " https://static.wikia.nocookie.net/onepiece/images/a/aa/Big_Top.png/revision/latest?cb=20210130225147&path-prefix=es ",
@@ -88,11 +87,29 @@ Crear un nuevo barco
   }
   ```
   
-**DELETE PIRATA** http://localhost:3000/api/v1/barcos/:id/piratas
-para eliminar piratas se utiliza esta ruta y en el body con formato json se agrega el/los piratas a eliminar
+**PUT**   http://localhost:3000/api/v1/barcos/:id
+
+Actualizar solo campos del barco
 ```sh
 {
-  "piratas": ["68ff97855b5be48579db0cd8", "id_otro_pirata"]
+	"name": "Red Force",
+	"imgUrl": " https://static.wikia.nocookie.net/onepiece/images/2/24/Red_Force.png/revision/latest?cb=20240826005937&path-prefix=es ",
+	"capitan": "Shanks",
+	"material": "Madera reforzada con acero",
+	"velas": 3,
+}
+```
+Agregar piratas al barco
+```sh
+{
+  "agregarPiratas": ["6734abc123def456789xyz01", "6734abc123def456789xyz02"]
 }
 ```
 
+Eliminar piratas del barco
+```sh
+{
+  "eliminarPiratas": ["6734abc123def456789xyz01"]
+}
+```
+ (se puede agregar ', [id_otro_pirata]')

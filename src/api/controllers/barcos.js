@@ -31,77 +31,59 @@ const updateBarcos = async (req, res, next) => {
     if (!oldBarco) {
       return res.status(404).json('Barco no encontrado');
     }
+    const operacionesMongo = {};
+    const { agregarPiratas, eliminarPiratas, ...datosActualizados } = req.body;
 
-    const datosActualizados = { ...req.body };
-    
-    let nuevosPiratas = [];
-
-    if (req.body.piratas) {
-      if (Array.isArray(req.body.piratas)) {
-        nuevosPiratas = req.body.piratas;
-      } else {
-        nuevosPiratas = [req.body.piratas];
-      }
-      
-      delete datosActualizados.piratas;
-      
-      const barcoUpdated = await Barcos.findByIdAndUpdate(
-        id, 
-        {
-          ...datosActualizados,
-          $addToSet: { piratas: { $each: nuevosPiratas } }
-        },
-        { new: true }
-      );
-      return res.status(200).json(barcoUpdated);
+    if (Object.keys(datosActualizados).length > 0) {
+      operacionesMongo.$set = datosActualizados;
     }
 
-    const barcoUpdated = await Barcos.findByIdAndUpdate(id, datosActualizados, {
+    if (agregarPiratas) {
+      let piratasArray;
+
+      if (Array.isArray(agregarPiratas)) {
+        piratasArray = agregarPiratas;
+      } else {
+        piratasArray = [agregarPiratas];
+      }
+
+      if (!operacionesMongo.$addToSet) {
+        operacionesMongo.$addToSet = {};
+      }
+
+      operacionesMongo.$addToSet.piratas = { $each: piratasArray };
+    }
+
+    if (eliminarPiratas) {
+      let piratasArray;
+
+      if (Array.isArray(eliminarPiratas)) {
+        piratasArray = eliminarPiratas;
+      } else {
+        piratasArray = [eliminarPiratas];
+      }
+
+      if (!operacionesMongo.$pull) {
+        operacionesMongo.$pull = {};
+      }
+
+      operacionesMongo.$pull.piratas = { $in: piratasArray };
+    }
+
+    if (Object.keys(operacionesMongo).length === 0) {
+      return res.status(400).json('No hay datos para actualizar');
+    }
+
+    const barcoUpdated = await Barcos.findByIdAndUpdate(id, operacionesMongo, {
       new: true,
+      runValidators: true,
     });
-    return res.status(200).json(barcoUpdated);
-  } catch (error) {
-    return res.status(400).json(`Error al actualizar info del barco:${error.message}`);
-  }
-};
-
-//? PATCH, eliminar pirata dentro de un barco
-
-const deletePirataBarco = async(req,res,next)=>{
-  try {
-    const { id } = req.params;
-    const oldBarco = await Barcos.findById(id);
-
-    if (!oldBarco) {
-      return res.status(404).json('Barco no encontrado');
-    }
-
-    let piratasAEliminar = [];
-
-    if (req.body.piratas) {
-      if (Array.isArray(req.body.piratas)) {
-        piratasAEliminar = req.body.piratas;
-      } else {
-        piratasAEliminar = [req.body.piratas];
-      }
-    }
-
-    const barcoUpdated = await Barcos.findByIdAndUpdate(
-      id,
-      {
-        $pull: { piratas: { $in: piratasAEliminar } }
-      },
-      { new: true }
-    );
 
     return res.status(200).json(barcoUpdated);
   } catch (error) {
-    return res.status(400).json(`Error al eliminar piratas del barco:${error.message}`);
+    return res.status(400).json(`Error al actualizar info del barco: ${error.message}`);
   }
 };
-
-
-
 
 //?DELETE
 const deleteBarcos = async (req, res, next) => {
@@ -118,6 +100,5 @@ module.exports = {
   postBarcos,
   getBarcos,
   deleteBarcos,
-  deletePirataBarco,
   updateBarcos,
 };
